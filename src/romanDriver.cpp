@@ -1,5 +1,6 @@
 #include <string>
 #include <iostream>
+#include "roman.h"
 
 int main() {
     bool stop = false;
@@ -9,7 +10,8 @@ int main() {
         std::cout << "Enter a roman numeral: ";
         std::getline(std::cin, selection);
 
-        std::cout << "The equivalent of the roman numeral is \n";
+        auto roman = romanType(std::move(selection));
+        roman.printArabic();
 
         std::cout << "Try another number (y/n)? ";
         while (true) {
