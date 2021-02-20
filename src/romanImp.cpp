@@ -19,3 +19,13 @@ void romanType::printRoman() const {
 unsigned int romanType::toInteger() const {
     return 0;
 }
+
+std::unordered_map<char, unsigned int> romanType::romanToArabic = {
+    {'M', 1000},
+    {'D', 500},
+    {'C', 100},
+    {'L', 50},
+    {'X', 10},
+    {'V', 5},
+    { 'I', 1},
+};

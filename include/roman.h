@@ -2,6 +2,7 @@
 #define CS_236_ROMAN_H
 
 #include <string>
+#include <unordered_map>
 
 /**
  * @brief Represents a Roman numeral value.
@@ -58,6 +59,8 @@ private:
 
     std::string romanNumeral;
     unsigned int arabicNumeral;
+
+    static std::unordered_map<char, unsigned int> romanToArabic;
 };
 
 #endif
