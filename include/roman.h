@@ -27,6 +27,8 @@ public:
      * Copy the string into the new object and then convert it to an integer.
      *
      * @param value The string representing the Roman numeral value.
+     *
+     * @throw std::invalid_argument The roman numeral is empty or contains an invalid character.
      */
     explicit romanType(const std::string& value);
 
@@ -36,6 +38,8 @@ public:
      * Move the string into the new object and then convert it to an integer.
      *
      * @param value The string representing the Roman numeral value.
+     *
+     * @throw std::invalid_argument The roman numeral is empty or contains an invalid character.
      */
     explicit romanType(std::string&& value);
 
@@ -53,9 +57,10 @@ private:
     /**
      * @brief Convert the Roman numeral to an integer.
      *
+     * @throw std::invalid_argument The roman numeral is empty or contains an invalid character.
      * @return The integer representation of the Roman numeral.
      */
-    unsigned int toInteger() const;
+    [[nodiscard]] unsigned int toInteger() const;
 
     std::string romanNumeral;
     unsigned int arabicNumeral;

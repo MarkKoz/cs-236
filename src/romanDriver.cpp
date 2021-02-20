@@ -1,5 +1,6 @@
-#include <string>
 #include <iostream>
+#include <optional>
+#include <string>
 #include "roman.h"
 
 int main() {
@@ -7,11 +8,20 @@ int main() {
     std::string selection;
 
     while (!stop) {
+        std::optional<romanType> roman;
         std::cout << "Enter a roman numeral: ";
-        std::getline(std::cin, selection);
 
-        auto roman = romanType(std::move(selection));
-        roman.printArabic();
+        while (true) {
+            std::getline(std::cin, selection);
+            try {
+                roman = romanType(std::move(selection));
+                break;
+            } catch (const std::invalid_argument& error) {
+                std::cerr << error.what() << " Please try again: ";
+            }
+        }
+
+        roman->printArabic(); // roman will always have a value once the loop ends.
 
         std::cout << "Try another number (y/n)? ";
         while (true) {

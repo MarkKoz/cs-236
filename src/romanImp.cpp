@@ -17,12 +17,23 @@ void romanType::printRoman() const {
 }
 
 unsigned int romanType::toInteger() const {
+    if (romanNumeral.empty()) {
+        throw std::invalid_argument("Roman numeral string must not be empty.");
+    }
+
     unsigned int previous = UINT_MAX;  // Initialised to max to avoid subtraction at the start.
     unsigned int integer = 0;
-    unsigned int value;
+    unsigned int value = 0;
 
     for (const char character : romanNumeral) {
-        value = romanToArabic.at(character);
+        try {
+            value = romanToArabic.at(character);
+        } catch (const std::out_of_range&) {
+            // toInteger always needs to be called to initialise arabicNumeral. Since it needs to
+            // iterate characters anyway, may as well perform the validation here too.
+            throw std::invalid_argument("Roman numeral contains an invalid character.");
+        }
+
         integer += value;
 
         if (previous < value) {
