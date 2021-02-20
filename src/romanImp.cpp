@@ -1,11 +1,11 @@
 #include <iostream>
 #include "roman.h"
 
-romanType::romanType(const std::string& romanNumeral)
-    : romanNumeral(romanNumeral), arabicNumeral(toInteger()) { }
+romanType::romanType(const std::string& value)
+    : romanNumeral(value), arabicNumeral(toInteger()) { }
 
-romanType::romanType(std::string&& romanNumeral)
-    : romanNumeral(std::move(romanNumeral)), arabicNumeral(toInteger()) { }
+romanType::romanType(std::string&& value)
+    : romanNumeral(std::move(value)), arabicNumeral(toInteger()) { }
 
 void romanType::printArabic() const {
     std::cout << "The equivalent of the Roman numeral " << romanNumeral << " is "

@@ -25,18 +25,18 @@ public:
      *
      * Copy the string into the new object and then convert it to an integer.
      *
-     * @param romanNumeral The string representing the Roman numeral value.
+     * @param value The string representing the Roman numeral value.
      */
-    explicit romanType(const std::string& romanNumeral);
+    explicit romanType(const std::string& value);
 
     /**
      * @brief Construct a @c romanType from a string.
      *
      * Move the string into the new object and then convert it to an integer.
      *
-     * @param romanNumeral The string representing the Roman numeral value.
+     * @param value The string representing the Roman numeral value.
      */
-    explicit romanType(std::string&& romanNumeral);
+    explicit romanType(std::string&& value);
 
     /**
      * @brief Print the underlying value using Arabic numerals.
