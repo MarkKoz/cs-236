@@ -2,10 +2,10 @@
 #include "roman.h"
 
 romanType::romanType(const std::string& value)
-    : romanNumeral(value), arabicNumeral(toInteger()) { }
+    : romanNumeral{value}, arabicNumeral{toInteger()} { }
 
 romanType::romanType(std::string&& value)
-    : romanNumeral(std::move(value)), arabicNumeral(toInteger()) { }
+    : romanNumeral{std::move(value)}, arabicNumeral{toInteger()} { }
 
 void romanType::printArabic() const {
     std::cout << "The equivalent of the Roman numeral " << romanNumeral << " is "
@@ -37,7 +37,7 @@ unsigned int romanType::toInteger() const {
     return integer;
 }
 
-std::unordered_map<char, unsigned int> romanType::romanToArabic = {
+std::unordered_map<char, unsigned int> romanType::romanToArabic {
     {'M', 1000},
     {'D', 500},
     {'C', 100},
