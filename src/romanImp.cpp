@@ -2,22 +2,22 @@
 #include "roman.h"
 
 romanType::romanType(const std::string& value)
-    : romanNumeral{value}, arabicNumeral{toInteger()} { }
+    : roman_numeral{value}, arabic_numeral{to_integer()} { }
 
 romanType::romanType(std::string&& value)
-    : romanNumeral{std::move(value)}, arabicNumeral{toInteger()} { }
+    : roman_numeral{std::move(value)}, arabic_numeral{to_integer()} { }
 
-void romanType::printArabic() const {
-    std::cout << "The equivalent of the Roman numeral " << romanNumeral << " is "
-        << arabicNumeral << '\n';
+void romanType::print_arabic() const {
+    std::cout << "The equivalent of the Roman numeral " << roman_numeral << " is "
+        << arabic_numeral << '\n';
 }
 
-void romanType::printRoman() const {
-    std::cout << "The Roman numeral is " << romanNumeral << '\n';
+void romanType::print_roman() const {
+    std::cout << "The Roman numeral is " << roman_numeral << '\n';
 }
 
-unsigned int romanType::toInteger() const {
-    if (romanNumeral.empty()) {
+unsigned int romanType::to_integer() const {
+    if (roman_numeral.empty()) {
         throw std::invalid_argument("Roman numeral string must not be empty.");
     }
 
@@ -25,11 +25,11 @@ unsigned int romanType::toInteger() const {
     unsigned int integer = 0;
     unsigned int value = 0;
 
-    for (const char character : romanNumeral) {
+    for (const char character : roman_numeral) {
         try {
-            value = romanToArabic.at(character);
+            value = roman_to_arabic.at(character);
         } catch (const std::out_of_range&) {
-            // toInteger always needs to be called to initialise arabicNumeral. Since it needs to
+            // to_integer always needs to be called to initialise arabic_numeral. Since it needs to
             // iterate characters anyway, may as well perform the validation here too.
             throw std::invalid_argument("Roman numeral contains an invalid character.");
         }
@@ -48,7 +48,7 @@ unsigned int romanType::toInteger() const {
     return integer;
 }
 
-const std::unordered_map<char, unsigned int> romanType::romanToArabic {
+const std::unordered_map<char, unsigned int> romanType::roman_to_arabic {
     {'M', 1000},
     {'D', 500},
     {'C', 100},

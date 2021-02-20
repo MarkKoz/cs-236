@@ -21,7 +21,7 @@ int main() {
             }
         }
 
-        roman->printArabic(); // roman will always have a value once the loop ends.
+        roman->print_arabic(); // roman will always have a value once the loop ends.
 
         std::cout << "Try another number (y/n)? ";
         while (true) {

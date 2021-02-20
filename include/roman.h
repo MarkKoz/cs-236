@@ -46,12 +46,12 @@ public:
     /**
      * @brief Print the underlying value using Arabic numerals.
      */
-    void printArabic() const;
+    void print_arabic() const;
 
     /**
      * @brief Print the underlying value using Roman numerals.
      */
-    void printRoman() const;
+    void print_roman() const;
 
 private:
     /**
@@ -60,12 +60,12 @@ private:
      * @throw std::invalid_argument The roman numeral is empty or contains an invalid character.
      * @return The integer representation of the Roman numeral.
      */
-    [[nodiscard]] unsigned int toInteger() const;
+    [[nodiscard]] unsigned int to_integer() const;
 
-    std::string romanNumeral;
-    unsigned int arabicNumeral;
+    std::string roman_numeral;
+    unsigned int arabic_numeral;
 
-    static const std::unordered_map<char, unsigned int> romanToArabic;
+    static const std::unordered_map<char, unsigned int> roman_to_arabic;
 };
 
 #endif
