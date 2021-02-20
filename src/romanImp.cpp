@@ -17,7 +17,24 @@ void romanType::printRoman() const {
 }
 
 unsigned int romanType::toInteger() const {
-    return 0;
+    unsigned int previous = UINT_MAX;  // Initialised to max to avoid subtraction at the start.
+    unsigned int integer = 0;
+    unsigned int value;
+
+    for (const char character : romanNumeral) {
+        value = romanToArabic.at(character);
+        integer += value;
+
+        if (previous < value) {
+            // Subtract previous twice because it was already added.
+            // Ex: IV would add 1 first but then need to add 3 to make the total 4.
+            integer -= 2 * previous;
+        }
+
+        previous = value;
+    }
+
+    return integer;
 }
 
 std::unordered_map<char, unsigned int> romanType::romanToArabic = {
