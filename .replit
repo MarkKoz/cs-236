@@ -1,12 +1,12 @@
-language = "c++"
+language = "cpp"
 run="""
-    mkdir cmake-build-release \
+    mkdir -p cmake-build-release \
+    && cd cmake-build-release \
     && cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DCMAKE_C_COMPILER=/usr/bin/gcc \
         -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
-        -S . \
-        -B cmake-build \
-    && cmake --build cmake-build-release \
-    && cmake-build-release/output.exe
+        .. \
+    && cmake --build . \
+    && ./output
 """
