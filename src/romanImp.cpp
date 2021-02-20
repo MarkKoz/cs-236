@@ -37,7 +37,7 @@ unsigned int romanType::toInteger() const {
     return integer;
 }
 
-std::unordered_map<char, unsigned int> romanType::romanToArabic {
+const std::unordered_map<char, unsigned int> romanType::romanToArabic {
     {'M', 1000},
     {'D', 500},
     {'C', 100},

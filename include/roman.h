@@ -60,7 +60,7 @@ private:
     std::string romanNumeral;
     unsigned int arabicNumeral;
 
-    static std::unordered_map<char, unsigned int> romanToArabic;
+    static const std::unordered_map<char, unsigned int> romanToArabic;
 };
 
 #endif
