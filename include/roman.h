@@ -63,10 +63,10 @@ private:
      */
     [[nodiscard]] unsigned int to_integer() const;
 
-    std::string roman_numeral;
-    unsigned int arabic_numeral;
+    std::string roman_numeral_;
+    unsigned int arabic_numeral_;
 
-    static const std::unordered_map<char, unsigned int> roman_to_arabic;
+    static const std::unordered_map<char, unsigned int> ROMAN_TO_ARABIC;
 };
 
 #endif

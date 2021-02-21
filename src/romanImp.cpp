@@ -3,27 +3,27 @@
 #include <iostream>
 
 romanType::romanType(const std::string& value)
-    : roman_numeral {value}, arabic_numeral {to_integer()}
+    : roman_numeral_ {value}, arabic_numeral_ {to_integer()}
 { }
 
 romanType::romanType(std::string&& value)
-    : roman_numeral {std::move(value)}, arabic_numeral {to_integer()}
+    : roman_numeral_ {std::move(value)}, arabic_numeral_ {to_integer()}
 { }
 
 void romanType::print_arabic() const
 {
-    std::cout << "The equivalent of the Roman numeral " << roman_numeral << " is " << arabic_numeral
-              << '\n';
+    std::cout << "The equivalent of the Roman numeral " << roman_numeral_ << " is "
+              << arabic_numeral_ << '\n';
 }
 
 void romanType::print_roman() const
 {
-    std::cout << "The Roman numeral is " << roman_numeral << '\n';
+    std::cout << "The Roman numeral is " << roman_numeral_ << '\n';
 }
 
 unsigned int romanType::to_integer() const
 {
-    if (roman_numeral.empty()) {
+    if (roman_numeral_.empty()) {
         throw std::invalid_argument("Roman numeral string must not be empty.");
     }
 
@@ -31,11 +31,11 @@ unsigned int romanType::to_integer() const
     unsigned int integer = 0;
     unsigned int value = 0;
 
-    for (const char character : roman_numeral) {
+    for (const char character : roman_numeral_) {
         try {
-            value = roman_to_arabic.at(character);
+            value = ROMAN_TO_ARABIC.at(character);
         } catch (const std::out_of_range&) {
-            // to_integer always needs to be called to initialise arabic_numeral. Since it needs to
+            // to_integer always needs to be called to initialise arabic_numeral_. Since it needs to
             // iterate characters anyway, may as well perform the validation here too.
             throw std::invalid_argument("Roman numeral contains an invalid character.");
         }
@@ -54,7 +54,7 @@ unsigned int romanType::to_integer() const
     return integer;
 }
 
-const std::unordered_map<char, unsigned int> romanType::roman_to_arabic {
+const std::unordered_map<char, unsigned int> romanType::ROMAN_TO_ARABIC {
     {'M', 1000},
     {'D', 500},
     {'C', 100},
