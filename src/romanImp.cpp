@@ -27,7 +27,8 @@ unsigned int romanType::to_integer() const
         throw std::invalid_argument("Roman numeral string must not be empty.");
     }
 
-    unsigned int previous = UINT_MAX; // Initialised to max to avoid subtraction at the start.
+    // Initialised to max to avoid subtraction at the start.
+    unsigned int previous = ROMAN_TO_ARABIC.at('M');
     unsigned int integer = 0;
     unsigned int value = 0;
 
