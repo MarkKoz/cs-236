@@ -19,7 +19,8 @@
  * A larger numeral preceding a smaller numeral means addition.
  * A smaller numeral preceding a larger numeral means subtraction.
  */
-class romanType {
+class romanType
+{
 public:
     /**
      * @brief Construct a @c romanType from a string.

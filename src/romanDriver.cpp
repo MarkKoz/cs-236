@@ -1,7 +1,8 @@
+#include "roman.h"
+
 #include <iostream>
 #include <optional>
 #include <string>
-#include "roman.h"
 
 /**
  * @brief Prompt for a Roman numeral input and display its Arabic equivalent.
@@ -19,7 +20,8 @@ void prompt_convert();
  */
 bool prompt_retry();
 
-int main() {
+int main()
+{
     do {
         prompt_convert();
     } while (prompt_retry());
@@ -27,7 +29,8 @@ int main() {
     return 0;
 }
 
-void prompt_convert() {
+void prompt_convert()
+{
     std::string selection;
     std::optional<romanType> roman;
 
@@ -46,7 +49,8 @@ void prompt_convert() {
     roman->print_arabic(); // roman will always have a value once the loop ends.
 }
 
-bool prompt_retry() {
+bool prompt_retry()
+{
     std::string selection;
 
     std::cout << "Try another number (y/n)? ";
@@ -58,7 +62,7 @@ bool prompt_retry() {
         } else if (selection == "n" || selection == "N") {
             std::cout << "Thank you!\n";
             return false;
-        } else  {
+        } else {
             std::cerr << "Unknown value, try again: ";
         }
     }
