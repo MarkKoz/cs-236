@@ -36,7 +36,7 @@ void prompt_convert()
 
     std::cout << "Enter a roman numeral: ";
     while (true) {
-        std::getline(std::cin, selection);
+        std::cin >> std::ws >> selection;
 
         try {
             roman = romanType(std::move(selection));
@@ -55,7 +55,7 @@ bool prompt_retry()
 
     std::cout << "Try another number (y/n)? ";
     while (true) {
-        std::getline(std::cin, selection);
+        std::cin >> std::ws >> selection;
 
         if (selection == "y" || selection == "Y") {
             return true;
