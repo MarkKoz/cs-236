@@ -1,0 +1,13 @@
+language = "cpp"
+run="""
+    rm -rf cmake-build-release \
+    && mkdir -p cmake-build-release \
+    && cd cmake-build-release \
+    && cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_C_COMPILER=/usr/bin/gcc \
+        -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
+        .. \
+    && cmake --build . \
+    && ./output
+"""
