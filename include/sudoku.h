@@ -1,61 +1,95 @@
-// this is the header file
-// you can modify or add additional functions/variable as you wish.
-// 
+#include <array>
+
 class sudoku
 {
 public:
+    typedef unsigned int cell_t;
+    typedef std::array<std::array<cell_t, 9>, 9> grid_t;
+
+    /**
+     * @brief Construct an empty @c sudoku puzzle.
+     *
+     * Initialise the grid with zeros.
+     */
     sudoku();
-      //default constructor
-      //Postcondition: grid is initialized to 0
 
-    sudoku(int g[][9]);
-      //constructor
-      //Postcondition: grid = g
+    /**
+     * @brief Construct a @c sudoku puzzle from a grid.
+     *
+     * Copy the grid into the new object.
+     *
+     * @param grid The 9×9 grid to use as the puzzle.
+     */
+    explicit sudoku(const grid_t& grid);
 
-    void initializeSudokuGrid();
-      //Function to promt the user to specify the numbers of the
-      //partially filled grid.
-      //Postcondition: grid is initialized to the numbers 
-      //    specified by the user.
+    // No rvalue constructor because grid_t is a trivially-copyable type.
 
-    void initializeSudokuGrid(int g[][9]);
-      //Function to initialize grid to g
-      //Postcondition: grid = g;
+    /**
+     * @brief Print the sudoku grid.
+     */
+    void print() const;
 
-    void printSudokuGrid();
-      //Function to print the sudoku grid.
-
-    bool solveSudoku();
-      //Funtion to solve the sudoku problem.
-      //Postcondition: If a solution exits, it returns true,
-      //    otherwise it returns false.
-    bool findEmptyGridSlot(int &row, int &col);
-      //Function to determine if the grid slot specified by 
-      //row and col is empty.
-      //Postcondition: Returns true if grid[row][col] = 0;
-
-    bool canPlaceNum(int row, int col, int num);
-      //Function to determine if num can be placed in 
-      //grid[row][col]
-      //Postcondition: Returns true if num can be placed in
-      //    grid[row][col], otherwise it returns false.
-
-    bool numAlreadyInRow(int row, int num);
-      //Function to determine if num is in grid[row][]
-      //Postcondition: Returns true if num is in grid[row][],
-      //    otherwise it returns false.
-
-    bool numAlreadyInCol(int col, int num);
-      //Function to determine if num is in grid[row][]
-      //Postcondition: Returns true if num is in grid[row][],
-      //    otherwise it returns false.
-
-    bool numAlreadyInBox(int smallGridRow, int smallGridCol, 
-                         int num);
-      //Function to determine if num is in the small grid
-      //Postcondition: Returns true if num is in small grid,
-      //    otherwise it returns false.
+    /**
+     * @brief Solve the sudoku puzzle.
+     *
+     * @return @c true if the grid could be solved (a solution exists); @c false otherwise.
+     */
+    bool solve();
 
 private:
-    int grid[9][9];
+    typedef grid_t::size_type index_t;
+
+    /**
+     * @brief Determine if filling a specific cell with a given value is valid.
+     *
+     * @param row The row the cell lies in.
+     * @param column The column the cell lies in.
+     * @param value The value to test.
+     *
+     * @return @c true if the value is valid; @c false otherwise.
+     */
+    bool can_fill(index_t row, index_t column, cell_t value) const;
+
+    /**
+     * @brief Determine if a value is in a column.
+     *
+     * @param column The column to search within.
+     * @param value The value to search for.
+     *
+     * @return @c true if the value exists in the column; @c false otherwise.
+     */
+    bool in_column(index_t column, cell_t value) const;
+
+    /**
+     * @brief Determine if a value is in a row.
+     *
+     * @param row The row to search within.
+     * @param value The value to search for.
+     *
+     * @return @c true if the value exists in the row; @c false otherwise.
+     */
+    bool in_row(index_t row, cell_t value) const;
+
+    /**
+     * @brief Determine if a value is in a subgrid.
+     *
+     * @param row The row the subgrid lies in. This is an index within the outer 3×3 grid.
+     * @param column The column the subgrid lies in. This is an index within the outer 3×3 grid.
+     * @param value The value to search for.
+     *
+     * @return @c true if the value exists in the subgrid; @c false otherwise.
+     */
+    bool in_subgrid(index_t row, index_t column, cell_t value) const;
+
+    /**
+     * @brief Determine if a cell is empty.
+     *
+     * @param row The row the cell lies in.
+     * @param column The column the cell lies in.
+     *
+     * @return @c true if the cell is empty; @c false otherwise.
+     */
+    bool is_empty(index_t row, index_t column) const;
+
+    grid_t grid_;
 };
