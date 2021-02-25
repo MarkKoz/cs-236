@@ -87,9 +87,11 @@ private:
      * @param row The row the cell lies in.
      * @param column The column the cell lies in.
      *
+     * @raise std::out_of_range The row and/or column are not within the range of the grid.
+     *
      * @return @c true if the cell is empty; @c false otherwise.
      */
-    bool is_empty(index_t row, index_t column) const;
+    [[nodiscard]] constexpr bool is_empty(index_t row, index_t column) const;
 
     grid_t grid_;
 };

@@ -31,7 +31,7 @@ bool sudoku::in_subgrid(const index_t row, const index_t column, const cell_t va
     return false;
 }
 
-bool sudoku::is_empty(const index_t row, const index_t column) const
+constexpr bool sudoku::is_empty(const index_t row, const index_t column) const
 {
-    return false;
+    return grid_.at(row).at(column) == 0;
 }
