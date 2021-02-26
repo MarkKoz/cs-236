@@ -1,4 +1,5 @@
 #include <array>
+#include <iostream>
 
 class sudoku
 {
@@ -25,16 +26,24 @@ public:
     // No rvalue constructor because grid_t is a trivially-copyable type.
 
     /**
-     * @brief Print the sudoku grid.
-     */
-    void print() const;
-
-    /**
      * @brief Solve the sudoku puzzle.
      *
      * @return @c true if the grid could be solved (a solution exists); @c false otherwise.
      */
     bool solve();
+
+    /**
+     * @brief Stream insertion operator.
+     *
+     * Insert a string representation of the sudoku puzzle into the stream. Format the puzzle as a
+     * 9×9 grid with newline-delimited rows and space-delimited columns.
+     *
+     * @param stream The output stream in which to insert the sudoku grid.
+     * @param puzzle The sudoku puzzle whose grid to insert.
+     *
+     * @return The given output stream.
+     */
+    friend std::ostream& operator<<(std::ostream& stream, const sudoku& puzzle);
 
 private:
     typedef grid_t::size_type index_t;

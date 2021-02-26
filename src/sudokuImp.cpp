@@ -4,11 +4,23 @@ sudoku::sudoku() : grid_ {} { }
 
 sudoku::sudoku(const grid_t& grid) : grid_ {grid} { }
 
-void sudoku::print() const { }
-
 bool sudoku::solve()
 {
     return false;
+}
+
+std::ostream& operator<<(std::ostream& stream, const sudoku& puzzle)
+{
+    for (const auto& row : puzzle.grid_) {
+        for (auto iterator = row.cbegin(); iterator != row.cend() - 1; ++iterator) {
+            stream << *iterator << " ";
+        }
+
+        // Write the last element separately to avoid a trailing delimiter.
+        stream << *(row.cend() -1) << '\n';
+    }
+
+    return stream;
 }
 
 bool sudoku::can_fill(const index_t row, const index_t column, const cell_t value) const
