@@ -50,8 +50,20 @@ bool sudoku::in_row(const index_t row, const cell_t value) const
     return false;
 }
 
-bool sudoku::in_subgrid(const index_t row, const index_t column, const cell_t value) const
+bool sudoku::in_subgrid(index_t row, index_t column, const cell_t value) const
 {
+    row *= 3;
+    column *= 3;
+
+    for (auto row_it = grid_.cbegin() + row; row_it != grid_.cbegin() + row + 3; ++row_it) {
+        auto column_it = row_it->cbegin() + column;
+        for (; column_it != row_it->cbegin() + column + 3; ++column_it) {
+            if (*column_it == value) {
+                return true;
+            }
+        }
+    }
+
     return false;
 }
 

@@ -88,7 +88,7 @@ private:
      *
      * @return @c true if the value exists in the subgrid; @c false otherwise.
      */
-    bool in_subgrid(index_t row, index_t column, cell_t value) const;
+    [[nodiscard]] bool in_subgrid(index_t row, index_t column, cell_t value) const;
 
     /**
      * @brief Determine if a cell is empty.
