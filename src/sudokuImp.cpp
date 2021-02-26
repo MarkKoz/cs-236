@@ -17,7 +17,7 @@ std::ostream& operator<<(std::ostream& stream, const sudoku& puzzle)
         }
 
         // Write the last element separately to avoid a trailing delimiter.
-        stream << *(row.cend() -1) << '\n';
+        stream << *(row.cend() - 1) << '\n';
     }
 
     return stream;
@@ -30,11 +30,23 @@ bool sudoku::can_fill(const index_t row, const index_t column, const cell_t valu
 
 bool sudoku::in_column(const index_t column, const cell_t value) const
 {
+    for (const auto& row : grid_) {
+        if (row.at(column) == value) {
+            return true;
+        }
+    }
+
     return false;
 }
 
 bool sudoku::in_row(const index_t row, const cell_t value) const
 {
+    for (unsigned int current_value : grid_.at(row)) {
+        if (current_value == value) {
+            return true;
+        }
+    }
+
     return false;
 }
 

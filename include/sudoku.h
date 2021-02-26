@@ -67,7 +67,7 @@ private:
      *
      * @return @c true if the value exists in the column; @c false otherwise.
      */
-    bool in_column(index_t column, cell_t value) const;
+    [[nodiscard]] bool in_column(index_t column, cell_t value) const;
 
     /**
      * @brief Determine if a value is in a row.
@@ -77,7 +77,7 @@ private:
      *
      * @return @c true if the value exists in the row; @c false otherwise.
      */
-    bool in_row(index_t row, cell_t value) const;
+    [[nodiscard]] bool in_row(index_t row, cell_t value) const;
 
     /**
      * @brief Determine if a value is in a subgrid.
