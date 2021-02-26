@@ -25,7 +25,8 @@ std::ostream& operator<<(std::ostream& stream, const sudoku& puzzle)
 
 bool sudoku::can_fill(const index_t row, const index_t column, const cell_t value) const
 {
-    return false;
+    return !in_row(row, value) && !in_column(column, value)
+        && !in_subgrid(row / 3, column / 3, value);
 }
 
 bool sudoku::in_column(const index_t column, const cell_t value) const

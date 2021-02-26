@@ -51,13 +51,15 @@ private:
     /**
      * @brief Determine if filling a specific cell with a given value is valid.
      *
+     * The row, column, and subgrid must not contain the value.
+     *
      * @param row The row the cell lies in.
      * @param column The column the cell lies in.
      * @param value The value to test.
      *
      * @return @c true if the value is valid; @c false otherwise.
      */
-    bool can_fill(index_t row, index_t column, cell_t value) const;
+    [[nodiscard]] bool can_fill(index_t row, index_t column, cell_t value) const;
 
     /**
      * @brief Determine if a value is in a column.
