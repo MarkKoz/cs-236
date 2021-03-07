@@ -104,5 +104,19 @@ private:
      */
     [[nodiscard]] constexpr bool is_empty(index_t row, index_t column) const;
 
+    /**
+     * @brief Solve the sudoku puzzle recursively.
+     *
+     * This is a recursive backtracking algorithm. Try to fill a cell with a value 1-9 and continue.
+     * If the path turns out to be invalid, go back to the previous cell and try again using the
+     * next valid value instead.
+     *
+     * @param row The row of the cell to try to solve.
+     * @param column The column of the cell to try to solve.
+     *
+     * @return @c true if the grid is solved; @c false otherwise.
+     */
+    bool solve_recursively(index_t row, index_t column);
+
     grid_t grid_;
 };

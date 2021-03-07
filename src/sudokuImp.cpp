@@ -6,6 +6,45 @@ sudoku::sudoku(const grid_t& grid) : grid_ {grid} { }
 
 bool sudoku::solve()
 {
+    return solve_recursively(0, 0);
+}
+
+bool sudoku::solve_recursively(index_t row, index_t column)
+{
+    // Go to the next row when the end of the row is reached.
+    if (column == 9) {
+        ++row;
+        column = 0;
+    }
+
+    if (row == 9) {
+        // The puzzle is solved since the algorithm has gone through every cell.
+        return true;
+    }
+
+    if (!is_empty(row, column)) {
+        // The current cell is already filled; move on to the next cell.
+        return solve_recursively(row, column + 1);
+    }
+
+    // Try filling the cell with every value from 1 to 9.
+    for (cell_t value = 1; value <= 9; ++value) {
+        if (can_fill(row, column, value)) {
+            grid_.at(row).at(column) = value;
+
+            if (solve_recursively(row, column + 1)) {
+                // A solution was found using the current value; no need to try the next.
+                return true;
+            } else {
+                // The current value didn't lead to a solution. Discard the set value to avoid
+                // it interfering with the can_fill check for subsequent values.
+                grid_.at(row).at(column) = 0;
+            }
+        }
+    }
+
+    // No valid value was found for the cell.
+    // Therefore, the puzzle in unsolvable in its current state.
     return false;
 }
 
