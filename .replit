@@ -1,0 +1,13 @@
+language = "cpp"
+run="""
+    rm -rf IGNORE_THIS \
+    && mkdir -p IGNORE_THIS \
+    && cd IGNORE_THIS \
+    && cmake \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_C_COMPILER=/usr/bin/gcc \
+        -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
+        .. \
+    && cmake --build . \
+    && ./output
+"""
