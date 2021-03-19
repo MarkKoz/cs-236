@@ -17,7 +17,7 @@ public:
 private:
     std::shared_ptr<node<T>>& balance();
 
-    [[nodiscard]] unsigned height() const;
+    [[nodiscard]] std::size_t height(const std::shared_ptr<node<T>>& node) const;
 
     void insert_node(const std::shared_ptr<node<T>>& parent, std::unique_ptr<node<T>>& node);
 

@@ -32,9 +32,20 @@ std::shared_ptr<node<T>>& avl_tree<T>::balance()
 }
 
 template<typename T>
-unsigned avl_tree<T>::height() const
+std::size_t avl_tree<T>::height(const std::shared_ptr<node<T>>& node) const
 {
-    return 0;
+    if (node == nullptr) {
+        return 0;
+    } else {
+        std::size_t left_height = height(node->left());
+        std::size_t right_height = height(node->right());
+
+        if (left_height > right_height) {
+            return left_height + 1;
+        } else {
+            return right_height + 1;
+        }
+    }
 }
 
 template<typename T>
