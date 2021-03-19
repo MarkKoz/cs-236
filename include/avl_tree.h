@@ -33,7 +33,7 @@ private:
 
     [[nodiscard]] std::size_t height(const node_ptr& node) const;
 
-    void insert_node(node_ptr& parent, node_ptr& node);
+    void insert_node(node_ptr& parent, node_ptr&& node);
 
     node_ptr& rotate_left(node_ptr& node);
 

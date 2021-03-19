@@ -9,7 +9,7 @@ void avl_tree<T>::emplace(Args&&... args)
     if (!root_) {
         root_ = std::move(node);
     } else {
-        insert_node(root_, node);
+        insert_node(root_, std::move(node));
     }
 }
 
@@ -76,13 +76,13 @@ std::size_t avl_tree<T>::height(const node_ptr& node) const
 }
 
 template<typename T>
-void avl_tree<T>::insert_node(node_ptr& parent, node_ptr& node)
+void avl_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
 {
     if (parent->value > node->value) {
         // Smaller values to the left.
         if (parent->left) {
             // The left node_t exists; start the search at the left node_t.
-            insert_node(parent->left, node);
+            insert_node(parent->left, std::move(node));
         } else {
             // The left node_t doesn't exist; found the free position.
             parent->left = std::move(node); // Inserts the node_t.
@@ -91,7 +91,7 @@ void avl_tree<T>::insert_node(node_ptr& parent, node_ptr& node)
         // Larger go right.
         if (parent->right) {
             // The right node_t exists; start the search at the right node_t.
-            insert_node(parent->right, node);
+            insert_node(parent->right, std::move(node));
         } else {
             // The right node_t doesn't exist; found the free position.
             parent->right = std::move(node); // Inserts the node_t.
