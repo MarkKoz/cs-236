@@ -45,23 +45,39 @@ void avl_tree<T>::insert_node(
 template<typename T>
 std::shared_ptr<node<T>>& avl_tree<T>::rotate_left(std::shared_ptr<node<T>>& node)
 {
-    return nullptr;
+    auto& right = node->right();
+    auto& right_left = right->left();
+
+    right->set_left(node);
+    node->set_right(right_left);
+
+    return right;
 }
 
 template<typename T>
 std::shared_ptr<node<T>>& avl_tree<T>::rotate_left_right(std::shared_ptr<node<T>>& node)
 {
-    return nullptr;
+    node->set_left(rotate_left(node->left()));
+
+    return rotate_right(node);
 }
 
 template<typename T>
 std::shared_ptr<node<T>>& avl_tree<T>::rotate_right(std::shared_ptr<node<T>>& node)
 {
-    return nullptr;
+    auto& left = node->left();
+    auto& left_right = left->right();
+
+    left->set_right(node);
+    node->set_left(left_right);
+
+    return left;
 }
 
 template<typename T>
 std::shared_ptr<node<T>>& avl_tree<T>::rotate_right_left(std::shared_ptr<node<T>>& node)
 {
-    return nullptr;
+    node->set_right(rotate_right(node->right()));
+
+    return rotate_left(node);
 }
