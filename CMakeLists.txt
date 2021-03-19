@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(${PROJECT_NAME}
     include/avl_tree.h
-    include/node.h
     src/main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
     include

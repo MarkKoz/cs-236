@@ -1,7 +1,7 @@
 #ifndef CS_236_03_AVL_TREE_H
 #define CS_236_03_AVL_TREE_H
 
-#include "node.h"
+#include <memory>
 
 template<typename T>
 class avl_tree
@@ -15,21 +15,35 @@ public:
     void insert(T&& value);
 
 private:
-    std::shared_ptr<node<T>>& balance(std::shared_ptr<node<T>>& node);
+    struct node_t;
+    typedef typename std::unique_ptr<node_t> node_ptr;
 
-    [[nodiscard]] std::size_t height(const std::shared_ptr<node<T>>& node) const;
+    struct node_t
+    {
+        explicit node_t(const T& value_) : value {value_} { }
 
-    void insert_node(const std::shared_ptr<node<T>>& parent, std::unique_ptr<node<T>>& node);
+        explicit node_t(T&& value_) : value {std::move(value_)} { }
 
-    std::shared_ptr<node<T>>& rotate_left(std::shared_ptr<node<T>>& node);
+        T value;
+        node_ptr left;
+        node_ptr right;
+    };
 
-    std::shared_ptr<node<T>>& rotate_left_right(std::shared_ptr<node<T>>& node);
+    node_ptr& balance(node_ptr& node);
 
-    std::shared_ptr<node<T>>& rotate_right(std::shared_ptr<node<T>>& node);
+    [[nodiscard]] std::size_t height(const node_ptr& node) const;
 
-    std::shared_ptr<node<T>>& rotate_right_left(std::shared_ptr<node<T>>& node);
+    void insert_node(node_ptr& parent, node_ptr& node);
 
-    std::shared_ptr<node<T>> root_ = nullptr;
+    node_ptr& rotate_left(node_ptr& node);
+
+    node_ptr& rotate_left_right(node_ptr& node);
+
+    node_ptr& rotate_right(node_ptr& node);
+
+    node_ptr& rotate_right_left(node_ptr& node);
+
+    node_ptr root_ = nullptr;
 };
 
 #include "avl_tree.cpp"
