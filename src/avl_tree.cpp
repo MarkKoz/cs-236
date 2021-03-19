@@ -86,6 +86,7 @@ void avl_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
         } else {
             // The left node_t doesn't exist; found the free position.
             parent->left = std::move(node); // Inserts the node_t.
+            parent = std::move(balance(parent));
         }
     } else if (parent->value < node->value) {
         // Larger go right.
@@ -95,6 +96,7 @@ void avl_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
         } else {
             // The right node_t doesn't exist; found the free position.
             parent->right = std::move(node); // Inserts the node_t.
+            parent = std::move(balance(parent));
         }
     } else {
         // Value is equal to the parent's value; no duplicates allowed.
