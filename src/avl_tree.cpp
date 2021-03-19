@@ -78,7 +78,30 @@ std::size_t avl_tree<T>::height(const std::shared_ptr<node<T>>& node) const
 template<typename T>
 void avl_tree<T>::insert_node(
     const std::shared_ptr<node<T>>& parent, std::unique_ptr<node<T>>& node)
-{ }
+{
+    if (*parent->value() > *node->value()) {
+        // Smaller values to the left.
+        if (parent->left()) {
+            // The left node exists; start the search at the left node.
+            insert_node(parent->left(), node);
+        } else {
+            // The left node doesn't exist; found the free position.
+            parent->set_left(std::move(node)); // Inserts the node.
+        }
+    } else if (*parent->value() < *node->value()) {
+        // Larger go right.
+        if (parent->right()) {
+            // The right node exists; start the search at the right node.
+            insert_node(parent->right(), node);
+        } else {
+            // The right node doesn't exist; found the free position.
+            parent->set_right(std::move(node)); // Inserts the node.
+        }
+    } else {
+        // Value is equal to the parent's value; no duplicates allowed.
+        throw std::runtime_error("Cannot insert a duplicate value.");
+    }
+}
 
 template<typename T>
 std::shared_ptr<node<T>>& avl_tree<T>::rotate_left(std::shared_ptr<node<T>>& node)
