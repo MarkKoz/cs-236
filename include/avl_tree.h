@@ -15,7 +15,7 @@ public:
     void insert(T&& value);
 
 private:
-    std::shared_ptr<node<T>>& balance();
+    std::shared_ptr<node<T>>& balance(std::shared_ptr<node<T>>& node);
 
     [[nodiscard]] std::size_t height(const std::shared_ptr<node<T>>& node) const;
 

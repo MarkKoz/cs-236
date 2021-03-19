@@ -26,9 +26,36 @@ void avl_tree<T>::insert(T&& value)
 }
 
 template<typename T>
-std::shared_ptr<node<T>>& avl_tree<T>::balance()
+std::shared_ptr<node<T>>& avl_tree<T>::balance(std::shared_ptr<node<T>>& node)
 {
-    return nullptr;
+    // Don't use the difference because that can lead to an overflow.
+    auto left_height = height(node->left());
+    auto right_height = height(node->right());
+
+    if (left_height > right_height + 1) {
+        // Left subtree is taller.
+        auto left_left_height = height(node->left()->left());
+        auto left_right_height = height(node->left()->right());
+
+        if (left_left_height >= left_right_height) {
+            return rotate_right(node);
+        } else {
+            return rotate_left_right(node);
+        }
+    } else if (right_height < left_height + 1) {
+        // Right subtree is taller.
+        auto right_left_height = height(node->right()->left());
+        auto right_right_height = height(node->right()->right());
+
+        if (right_right_height >= right_left_height) {
+            return rotate_left(node);
+        } else {
+            return rotate_right_left(node);
+        }
+    } else {
+        // Already balanced; heights don't differ by more than 1.
+        return node;
+    }
 }
 
 template<typename T>
