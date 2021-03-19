@@ -29,4 +29,6 @@ private:
     std::shared_ptr<node<T>> right_ = nullptr;
 };
 
+#include "node.cpp"
+
 #endif

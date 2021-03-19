@@ -32,4 +32,6 @@ private:
     std::shared_ptr<node<T>> root_ = nullptr;
 };
 
+#include "avl_tree.cpp"
+
 #endif
