@@ -29,6 +29,7 @@ int main()
         switch (selected) {
             case selection::insert: {
                 insert_input(tree);
+                std::cout << tree;
                 break;
             }
             default:

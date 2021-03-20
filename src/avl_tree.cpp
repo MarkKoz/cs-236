@@ -28,6 +28,17 @@ void avl_tree<T>::insert(T&& value)
 }
 
 template<typename T>
+std::ostream& operator<<(std::ostream& stream, const avl_tree<T>& tree)
+{
+    const auto result = tree.build_tree_string(tree.root_.get());
+    for (const auto& line : result.lines) {
+        stream << '\n' << line;
+    }
+
+    return stream;
+}
+
+template<typename T>
 typename avl_tree<T>::node_ptr avl_tree<T>::balance(node_ptr&& node)
 {
     // Don't use the difference because that can lead to an overflow.
