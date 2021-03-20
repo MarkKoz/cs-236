@@ -17,6 +17,12 @@ public:
 
     void insert(T&& value);
 
+    void print_inorder() const;
+
+    void print_postorder() const;
+
+    void print_preorder() const;
+
     template<typename U>
     friend std::ostream& operator<<(std::ostream& stream, const avl_tree<U>& tree);
 
@@ -63,6 +69,12 @@ private:
     [[nodiscard]] std::size_t height(const node_t* node) const;
 
     void insert_node(node_ptr& parent, node_ptr&& node);
+
+    void recurse_inorder(const node_t* node) const;
+
+    void recurse_postorder(const node_t* node) const;
+
+    void recurse_preorder(const node_t* node) const;
 
     node_ptr rotate_left(node_ptr&& node);
 

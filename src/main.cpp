@@ -27,11 +27,22 @@ int main()
         selected = menu();
 
         switch (selected) {
-            case selection::insert: {
+            case selection::insert:
                 insert_input(tree);
                 std::cout << tree;
                 break;
-            }
+            case selection::inorder:
+                std::cout << tree << '\n';
+                tree.print_inorder();
+                break;
+            case selection::postorder:
+                std::cout << tree << '\n';
+                tree.print_postorder();
+                break;
+            case selection::preorder:
+                std::cout << tree << '\n';
+                tree.print_preorder();
+                break;
             default:
                 break;
         }

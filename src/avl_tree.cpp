@@ -1,5 +1,6 @@
 #include "avl_tree.h"
 
+#include <iostream>
 #include <stdexcept>
 
 template<typename T>
@@ -25,6 +26,27 @@ template<typename T>
 void avl_tree<T>::insert(T&& value)
 {
     emplace(value);
+}
+
+template<typename T>
+void avl_tree<T>::print_inorder() const
+{
+    recurse_inorder(root_.get());
+    std::cout << '\n';
+}
+
+template<typename T>
+void avl_tree<T>::print_postorder() const
+{
+    recurse_postorder(root_.get());
+    std::cout << '\n';
+}
+
+template<typename T>
+void avl_tree<T>::print_preorder() const
+{
+    recurse_preorder(root_.get());
+    std::cout << '\n';
 }
 
 template<typename T>
@@ -117,6 +139,36 @@ void avl_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
     }
 
     parent = balance(std::move(parent));
+}
+
+template<typename T>
+void avl_tree<T>::recurse_inorder(const node_t* node) const
+{
+    if (node != nullptr) {
+        recurse_inorder(node->left.get());
+        std::cout << node->value << ' ';
+        recurse_inorder(node->right.get());
+    }
+}
+
+template<typename T>
+void avl_tree<T>::recurse_postorder(const node_t* node) const
+{
+    if (node != nullptr) {
+        recurse_postorder(node->left.get());
+        recurse_postorder(node->right.get());
+        std::cout << node->value << ' ';
+    }
+}
+
+template<typename T>
+void avl_tree<T>::recurse_preorder(const node_t* node) const
+{
+    if (node != nullptr) {
+        std::cout << node->value << ' ';
+        recurse_preorder(node->left.get());
+        recurse_preorder(node->right.get());
+    }
 }
 
 template<typename T>
