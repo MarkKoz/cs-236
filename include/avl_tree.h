@@ -29,19 +29,19 @@ private:
         node_ptr right;
     };
 
-    node_ptr& balance(node_ptr& node);
+    node_ptr balance(node_ptr&& node);
 
-    [[nodiscard]] std::size_t height(const node_ptr& node) const;
+    [[nodiscard]] std::size_t height(const node_t* node) const;
 
     void insert_node(node_ptr& parent, node_ptr&& node);
 
-    node_ptr& rotate_left(node_ptr& node);
+    node_ptr rotate_left(node_ptr& node);
 
-    node_ptr& rotate_left_right(node_ptr& node);
+    node_ptr rotate_left_right(node_ptr& node);
 
-    node_ptr& rotate_right(node_ptr& node);
+    node_ptr rotate_right(node_ptr& node);
 
-    node_ptr& rotate_right_left(node_ptr& node);
+    node_ptr rotate_right_left(node_ptr& node);
 
     node_ptr root_ = nullptr;
 };

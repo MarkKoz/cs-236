@@ -28,16 +28,16 @@ void avl_tree<T>::insert(T&& value)
 }
 
 template<typename T>
-typename avl_tree<T>::node_ptr& avl_tree<T>::balance(node_ptr& node)
+typename avl_tree<T>::node_ptr avl_tree<T>::balance(node_ptr&& node)
 {
     // Don't use the difference because that can lead to an overflow.
-    const auto left_height = height(node->left);
-    const auto right_height = height(node->right);
+    const auto left_height = height(node->left.get());
+    const auto right_height = height(node->right.get());
 
     if (left_height > right_height + 1) {
         // Left subtree is taller.
-        const auto left_left_height = height(node->left->left);
-        const auto left_right_height = height(node->left->right);
+        const auto left_left_height = height(node->left->left.get());
+        const auto left_right_height = height(node->left->right.get());
 
         if (left_left_height >= left_right_height) {
             return rotate_right(node);
@@ -46,8 +46,8 @@ typename avl_tree<T>::node_ptr& avl_tree<T>::balance(node_ptr& node)
         }
     } else if (right_height > left_height + 1) {
         // Right subtree is taller.
-        const auto right_left_height = height(node->right->left);
-        const auto right_right_height = height(node->right->right);
+        const auto right_left_height = height(node->right->left.get());
+        const auto right_right_height = height(node->right->right.get());
 
         if (right_right_height >= right_left_height) {
             return rotate_left(node);
@@ -56,18 +56,20 @@ typename avl_tree<T>::node_ptr& avl_tree<T>::balance(node_ptr& node)
         }
     } else {
         // Already balanced; heights don't differ by more than 1.
-        return node;
+        return std::move(node);
     }
 }
 
+// Passing a raw pointer is more convenient cause, unlike a reference,
+// it doesn't need to be null-checked before being passed.
 template<typename T>
-std::size_t avl_tree<T>::height(const node_ptr& node) const
+std::size_t avl_tree<T>::height(const node_t* node) const
 {
     if (node == nullptr) {
         return 0;
     } else {
-        const auto left_height = height(node->left);
-        const auto right_height = height(node->right);
+        const auto left_height = height(node->left.get());
+        const auto right_height = height(node->right.get());
 
         if (left_height > right_height) {
             return left_height + 1;
@@ -88,7 +90,6 @@ void avl_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
         } else {
             // The left node_t doesn't exist; found the free position.
             parent->left = std::move(node); // Inserts the node_t.
-            parent = std::move(balance(parent));
         }
     } else if (parent->value < node->value) {
         // Larger go right.
@@ -98,50 +99,53 @@ void avl_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
         } else {
             // The right node_t doesn't exist; found the free position.
             parent->right = std::move(node); // Inserts the node_t.
-            parent = std::move(balance(parent));
         }
     } else {
         // Value is equal to the parent's value; no duplicates allowed.
         throw std::runtime_error("Cannot insert a duplicate value.");
     }
+
+    parent = std::move(balance(std::move(parent)));
 }
 
 template<typename T>
-typename avl_tree<T>::node_ptr& avl_tree<T>::rotate_left(node_ptr& node)
+typename avl_tree<T>::node_ptr avl_tree<T>::rotate_left(node_ptr& node)
 {
-    auto& right = node->right;
-    auto& right_left = right->left;
+    auto right = std::move(node->right);
 
+    node->right = std::move(right->left);
     right->left = std::move(node);
-    node->right = std::move(right_left);
 
     return right;
 }
 
 template<typename T>
-typename avl_tree<T>::node_ptr& avl_tree<T>::rotate_left_right(node_ptr& node)
+typename avl_tree<T>::node_ptr avl_tree<T>::rotate_left_right(node_ptr& node)
 {
-    node->left = std::move(rotate_left(node->left));
+    if (node->left) {
+        node->left = std::move(rotate_left(node->left));
+    }
 
     return rotate_right(node);
 }
 
 template<typename T>
-typename avl_tree<T>::node_ptr& avl_tree<T>::rotate_right(node_ptr& node)
+typename avl_tree<T>::node_ptr avl_tree<T>::rotate_right(node_ptr& node)
 {
-    auto& left = node->left;
-    auto& left_right = left->right;
+    auto left = std::move(node->left);
 
+    node->left = std::move(left->right);
     left->right = std::move(node);
-    node->left = std::move(left_right);
 
     return left;
 }
 
 template<typename T>
-typename avl_tree<T>::node_ptr& avl_tree<T>::rotate_right_left(node_ptr& node)
+typename avl_tree<T>::node_ptr avl_tree<T>::rotate_right_left(node_ptr& node)
 {
-    node->right = std::move(rotate_right(node->right));
+    if (node->right) {
+        node->right = std::move(rotate_right(node->right));
+    }
 
     return rotate_left(node);
 }
