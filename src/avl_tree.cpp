@@ -29,13 +29,13 @@ template<typename T>
 typename avl_tree<T>::node_ptr& avl_tree<T>::balance(node_ptr& node)
 {
     // Don't use the difference because that can lead to an overflow.
-    auto left_height = height(node->left);
-    auto right_height = height(node->right);
+    const auto left_height = height(node->left);
+    const auto right_height = height(node->right);
 
     if (left_height > right_height + 1) {
         // Left subtree is taller.
-        auto left_left_height = height(node->left->left);
-        auto left_right_height = height(node->left->right);
+        const auto left_left_height = height(node->left->left);
+        const auto left_right_height = height(node->left->right);
 
         if (left_left_height >= left_right_height) {
             return rotate_right(node);
@@ -44,8 +44,8 @@ typename avl_tree<T>::node_ptr& avl_tree<T>::balance(node_ptr& node)
         }
     } else if (right_height > left_height + 1) {
         // Right subtree is taller.
-        auto right_left_height = height(node->right->left);
-        auto right_right_height = height(node->right->right);
+        const auto right_left_height = height(node->right->left);
+        const auto right_right_height = height(node->right->right);
 
         if (right_right_height >= right_left_height) {
             return rotate_left(node);
@@ -64,8 +64,8 @@ std::size_t avl_tree<T>::height(const node_ptr& node) const
     if (node == nullptr) {
         return 0;
     } else {
-        std::size_t left_height = height(node->left);
-        std::size_t right_height = height(node->right);
+        const auto left_height = height(node->left);
+        const auto right_height = height(node->right);
 
         if (left_height > right_height) {
             return left_height + 1;
