@@ -60,7 +60,7 @@ DisableFormat: false
 #EmptyLineBeforeAccessModifier: Always
 FixNamespaceComments: true
 IncludeBlocks: Regroup
-IndentCaseBlocks: true
+IndentCaseBlocks: false
 IndentCaseLabels: true
 IndentExternBlock: Indent
 IndentGotoLabels: true
