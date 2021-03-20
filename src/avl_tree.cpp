@@ -1,5 +1,7 @@
 #include "avl_tree.h"
 
+#include <stdexcept>
+
 template<typename T>
 template<typename... Args>
 void avl_tree<T>::emplace(Args&&... args)
