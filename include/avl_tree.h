@@ -35,13 +35,13 @@ private:
 
     void insert_node(node_ptr& parent, node_ptr&& node);
 
-    node_ptr rotate_left(node_ptr& node);
+    node_ptr rotate_left(node_ptr&& node);
 
-    node_ptr rotate_left_right(node_ptr& node);
+    node_ptr rotate_left_right(node_ptr&& node);
 
-    node_ptr rotate_right(node_ptr& node);
+    node_ptr rotate_right(node_ptr&& node);
 
-    node_ptr rotate_right_left(node_ptr& node);
+    node_ptr rotate_right_left(node_ptr&& node);
 
     node_ptr root_ = nullptr;
 };

@@ -40,9 +40,9 @@ typename avl_tree<T>::node_ptr avl_tree<T>::balance(node_ptr&& node)
         const auto left_right_height = height(node->left->right.get());
 
         if (left_left_height >= left_right_height) {
-            return rotate_right(node);
+            return rotate_right(std::move(node));
         } else {
-            return rotate_left_right(node);
+            return rotate_left_right(std::move(node));
         }
     } else if (right_height > left_height + 1) {
         // Right subtree is taller.
@@ -50,9 +50,9 @@ typename avl_tree<T>::node_ptr avl_tree<T>::balance(node_ptr&& node)
         const auto right_right_height = height(node->right->right.get());
 
         if (right_right_height >= right_left_height) {
-            return rotate_left(node);
+            return rotate_left(std::move(node));
         } else {
-            return rotate_right_left(node);
+            return rotate_right_left(std::move(node));
         }
     } else {
         // Already balanced; heights don't differ by more than 1.
@@ -109,7 +109,7 @@ void avl_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
 }
 
 template<typename T>
-typename avl_tree<T>::node_ptr avl_tree<T>::rotate_left(node_ptr& node)
+typename avl_tree<T>::node_ptr avl_tree<T>::rotate_left(node_ptr&& node)
 {
     auto right = std::move(node->right);
 
@@ -120,17 +120,17 @@ typename avl_tree<T>::node_ptr avl_tree<T>::rotate_left(node_ptr& node)
 }
 
 template<typename T>
-typename avl_tree<T>::node_ptr avl_tree<T>::rotate_left_right(node_ptr& node)
+typename avl_tree<T>::node_ptr avl_tree<T>::rotate_left_right(node_ptr&& node)
 {
     if (node->left) {
-        node->left = std::move(rotate_left(node->left));
+        node->left = std::move(rotate_left(std::move(node->left)));
     }
 
-    return rotate_right(node);
+    return rotate_right(std::move(node));
 }
 
 template<typename T>
-typename avl_tree<T>::node_ptr avl_tree<T>::rotate_right(node_ptr& node)
+typename avl_tree<T>::node_ptr avl_tree<T>::rotate_right(node_ptr&& node)
 {
     auto left = std::move(node->left);
 
@@ -141,11 +141,11 @@ typename avl_tree<T>::node_ptr avl_tree<T>::rotate_right(node_ptr& node)
 }
 
 template<typename T>
-typename avl_tree<T>::node_ptr avl_tree<T>::rotate_right_left(node_ptr& node)
+typename avl_tree<T>::node_ptr avl_tree<T>::rotate_right_left(node_ptr&& node)
 {
     if (node->right) {
-        node->right = std::move(rotate_right(node->right));
+        node->right = std::move(rotate_right(std::move(node->right)));
     }
 
-    return rotate_left(node);
+    return rotate_left(std::move(node));
 }
