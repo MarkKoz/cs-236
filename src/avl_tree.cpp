@@ -42,7 +42,7 @@ typename avl_tree<T>::node_ptr& avl_tree<T>::balance(node_ptr& node)
         } else {
             return rotate_left_right(node);
         }
-    } else if (right_height < left_height + 1) {
+    } else if (right_height > left_height + 1) {
         // Right subtree is taller.
         auto right_left_height = height(node->right->left);
         auto right_right_height = height(node->right->right);
