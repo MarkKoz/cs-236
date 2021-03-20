@@ -105,7 +105,7 @@ void avl_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
         throw std::runtime_error("Cannot insert a duplicate value.");
     }
 
-    parent = std::move(balance(std::move(parent)));
+    parent = balance(std::move(parent));
 }
 
 template<typename T>
