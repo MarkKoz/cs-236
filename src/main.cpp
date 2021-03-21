@@ -14,10 +14,32 @@ typedef enum
     end = 5,
 } selection;
 
+/**
+ * @brief Display the menu and prompt for a selection.
+ *
+ * Prompt again if the user enters an invalid selection.
+ *
+ * @return The user's selection.
+ */
 selection menu();
 
+/**
+ * @brief Prompt for an integer input and insert it into the tree.
+ *
+ * Prompt again if the user enters a non-integer or duplicate value.
+ *
+ * @param tree The tree in which to insert the user's input value.
+ */
 void insert_input(avl_tree<int>& tree);
 
+/**
+ * @brief Process menu selections.
+ *
+ * The main menu loop which displays the menu and takes action based on the menu selection.
+ * Repeats until the user selects to exit.
+ *
+ * @return The exit code of the process.
+ */
 int main()
 {
     avl_tree<int> tree;
