@@ -47,6 +47,46 @@ void rb_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
         if (parent->left) {
             // The left node_t exists; start the search at the left node.
             insert_node(parent->left, std::move(node));
+
+            auto& grandparent = parent;
+            const auto parent_ = grandparent->left.get();
+            const auto uncle = grandparent->right.get();
+
+            if (parent_ && parent_->is_red) { // P is red
+                typename node_ptr::pointer node_ = nullptr;
+                if (parent_->left && parent_->left->is_red) {
+                    node_ = parent_->left.get(); // The left node is red.
+                } else if (parent_->right && parent_->right->is_red) {
+                    node_ = parent_->right.get(); // The right node is red.
+                }
+
+                if (node_ != nullptr) { // At least one of P's children is also red.
+                    if (uncle && uncle->is_red) {
+                        // P is red and U is red; make them black and make G red.
+                        parent_->is_red = false;
+                        uncle->is_red = false;
+                        if (grandparent != root_) {
+                            grandparent->is_red = true;
+                        }
+                    } else { // P is red but U is black or null; rotation needed.
+                        if (node_ == parent_->right.get()) {
+                            // N is the right child of P and P is the left child of G.
+                            grandparent->is_red = true;
+                            node_->is_red = false;
+                            grandparent = rotate_left_right(std::move(grandparent));
+                        } else {
+                            // N is the left child of P and P is the left child of G.
+                            parent_->is_red = false;
+                            grandparent->is_red = true;
+                            grandparent = rotate_right(std::move(grandparent));
+                        }
+                    }
+                } else {
+                    // P is red but its children are black, so it's all correct.
+                }
+            } else {
+                // P is black, so it doesn't matter what colour its children are.
+            }
         } else {
             // The left node_t doesn't exist; found the free position.
             parent->left = std::move(node); // Inserts the node_t.
@@ -56,6 +96,46 @@ void rb_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
         if (parent->right) {
             // The right node_t exists; start the search at the right node.
             insert_node(parent->right, std::move(node));
+
+            auto& grandparent = parent;
+            const auto parent_ = grandparent->right.get();
+            const auto uncle = grandparent->left.get();
+
+            if (parent_ && parent_->is_red) { // P is red
+                typename node_ptr::pointer node_ = nullptr;
+                if (parent_->left && parent_->left->is_red) {
+                    node_ = parent_->left.get(); // The left node is red.
+                } else if (parent_->right && parent_->right->is_red) {
+                    node_ = parent_->right.get(); // The right node is red.
+                }
+
+                if (node_ != nullptr) { // At least one of P's children is also red.
+                    if (uncle && uncle->is_red) {
+                        // P is red and U is red; make them black and make G red.
+                        parent_->is_red = false;
+                        uncle->is_red = false;
+                        if (grandparent != root_) {
+                            grandparent->is_red = true;
+                        }
+                    } else { // P is red but U is black or null; rotation needed.
+                        if (node_ == parent_->left.get()) {
+                            // N is the left child of P and P is the right child of G.
+                            grandparent->is_red = true;
+                            node_->is_red = false;
+                            grandparent = rotate_right_left(std::move(grandparent));
+                        } else {
+                            // N is the right child of P and P is the right child of G.
+                            parent_->is_red = false;
+                            grandparent->is_red = true;
+                            grandparent = rotate_left(std::move(grandparent));
+                        }
+                    }
+                } else {
+                    // P is red but its children are black, so it's all correct.
+                }
+            } else {
+                // P is black, so it doesn't matter what colour its children are.
+            }
         } else {
             // The right node_t doesn't exist; found the free position.
             parent->right = std::move(node); // Inserts the node.
