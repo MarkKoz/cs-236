@@ -18,7 +18,12 @@ typename rb_tree<T>::box_t rb_tree<T>::build_tree_string(const rb_tree::node_t* 
         return {};
     }
 
-    const auto value = to_string(node->value);
+    auto value = to_string(node->value);
+    if (node->is_red) {
+        value += "(R)";
+    } else {
+        value += "(B)";
+    }
 
     std::string horizontal_branch;
     std::string vertical_branch;
