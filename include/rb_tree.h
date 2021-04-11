@@ -2,6 +2,9 @@
 #define CS_236_04_RB_TREE_H
 
 #include <memory>
+#include <ostream>
+#include <string>
+#include <vector>
 
 /**
  * @brief Red-black tree: a self-balancing binary search tree.
@@ -44,9 +47,24 @@ public:
      */
     void insert(T&& value);
 
+    /**
+     * @brief Stream insertion operator.
+     *
+     * Insert a string representation of the tree into the stream.
+     *
+     * @tparam U The type of the values of the nodes.
+     * @param stream The output stream in which to insert the tree.
+     * @param tree The tree to insert.
+     *
+     * @return The given output stream.
+     */
+    template<typename U>
+    friend std::ostream& operator<<(std::ostream& stream, const rb_tree<U>& tree);
+
 private:
     struct node_t;
     typedef typename std::unique_ptr<node_t> node_ptr;
+    typedef typename std::vector<std::string> box_lines;
 
     /**
      * @brief A binary tree node.
@@ -90,6 +108,93 @@ private:
          */
         bool is_red = true;
     };
+
+    /**
+     * @brief A "box" of characters represent a binary sub-tree.
+     *
+     * It's a "box" because all lines have same length, which is @c width. It is used to build a
+     * string representation of the tree.
+     */
+    struct box_t
+    {
+        /**
+         * @brief The string lines representing the sub-tree. They are all the same width.
+         *
+         * The first line contains the horizontal branch, including the root node's value.
+         * The second line contains the vertical branch, which are characters pointing towards the
+         * children. Any subsequent lines are the same as above but for the children.
+         */
+        box_lines lines;
+
+        /**
+         * @brief The width of all @c lines.
+         */
+        std::size_t width = 0;
+
+        /**
+         * @brief The index to the first character of the root node's value.
+         *
+         * This is an index into the first line in @c lines.
+         */
+        std::size_t root_start = 0;
+
+        /**
+         * @brief The index to the last character of the root node's value.
+         *
+         * This is an index into the first line in @c lines.
+         */
+        std::size_t root_end = 0;
+    };
+
+    /**
+     * @brief Build horizontal and vertical branch strings connecting a parent to its left child.
+     *
+     * Store the results directly in @c horizontal and @c vertical (they're references.).
+     *
+     * @param box The box for the left child.
+     * @param gap The size of the gap between the root nodes of the left child and its sibling.
+     * @param horizontal The line of the horizontal branch from the parent to @c vertical.
+     * @param vertical The line of the vertical branch from @c horizontal to the left child.
+     */
+    void build_left_branch(
+        const box_t& box, std::size_t& gap, std::string& horizontal, std::string& vertical) const;
+
+    /**
+     * @brief Build horizontal and vertical branch strings connecting a parent to its right child.
+     *
+     * Store the results directly in @c horizontal and @c vertical (they're references.).
+     *
+     * @param box The box for the left child.
+     * @param gap The size of the gap between the root nodes of the right child and its sibling.
+     * @param horizontal The line of the horizontal branch from the parent to @c vertical.
+     * @param vertical The line of the vertical branch from @c horizontal to the right child.
+     */
+    void build_right_branch(
+        const box_t& box, std::size_t& gap, std::string& horizontal, std::string& vertical) const;
+
+    /**
+     * @brief Recursively build a list of strings representing the tree rooted at @c node.
+     *
+     * Perform a recursive breadth-first search to build strings representing each level of the
+     * tree from the bottom to the top. Each branch has its own "box" to represent it, which is
+     * basically a list of lines of equal length (achieved by padding with spaces). Combine the
+     * boxes of the children to form the box of the parent. See the documentation of @c node_t for
+     * more details.
+     *
+     * The algorithm was adapted from the Python package "binarytree".
+     *
+     * @param node The root node of the tree from which to build a string.
+     *
+     * @return The @c box_t for the root node, containing a list of strings representing the entire
+     *         tree.
+     */
+    [[nodiscard]] box_t build_tree_string(const node_t* node) const;
+
+    void combine_boxes(
+        box_lines& destination,
+        const std::size_t gap_size,
+        const box_t& left,
+        const box_t& right) const;
 
     /**
      * @brief Insert a node intro the tree and then balance the tree.
@@ -156,5 +261,6 @@ private:
 // separate from its declarations. These files must not be listed as sources for CMake; the goal
 // is to make the compiler think these definitions were in the header file all along.
 #include "rb_tree.cpp"
+#include "tree_format.cpp"
 
 #endif

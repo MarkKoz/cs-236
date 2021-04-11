@@ -28,6 +28,17 @@ void rb_tree<T>::insert(T&& value)
 }
 
 template<typename T>
+std::ostream& operator<<(std::ostream& stream, const rb_tree<T>& tree)
+{
+    const auto result = tree.build_tree_string(tree.root_.get());
+    for (const auto& line : result.lines) {
+        stream << '\n' << line;
+    }
+
+    return stream;
+}
+
+template<typename T>
 void rb_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
 {
     if (parent->value > node->value) {
