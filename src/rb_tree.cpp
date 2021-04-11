@@ -9,6 +9,7 @@ void rb_tree<T>::emplace(Args&&... args)
     auto node = std::make_unique<rb_tree<T>::node_t>(T(std::forward<Args>(args)...));
 
     if (!root_) {
+        node->is_red = false; // Root should be black when the tree is empty.
         root_ = std::move(node);
     } else {
         insert_node(root_, std::move(node));
