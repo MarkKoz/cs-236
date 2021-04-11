@@ -147,6 +147,16 @@ private:
     };
 
     /**
+     * @brief Balance and/or recolour a sub-tree within which a new node was just inserted.
+     *
+     * @param parent The parent node of the node that was just inserted.
+     * @param grandparent The parent node of @c parent.
+     *
+     * @return The root node of the balanced sub-tree.
+     */
+    node_ptr balance(node_t* parent, node_ptr&& grandparent);
+
+    /**
      * @brief Build horizontal and vertical branch strings connecting a parent to its left child.
      *
      * Store the results directly in @c horizontal and @c vertical (they're references.).

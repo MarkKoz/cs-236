@@ -1,5 +1,6 @@
 #include "rb_tree.h"
 
+#include <cassert>
 #include <stdexcept>
 
 template<typename T>
@@ -40,6 +41,74 @@ std::ostream& operator<<(std::ostream& stream, const rb_tree<T>& tree)
 }
 
 template<typename T>
+typename rb_tree<T>::node_ptr rb_tree<T>::balance(
+    rb_tree::node_t* parent, rb_tree::node_ptr&& grandparent)
+{
+    assert(parent != nullptr);
+    if (!parent->is_red) {
+        return std::move(grandparent); // Parent is black, so the children's colours don't matter.
+    }
+
+    // Determine which child was the inserted node.
+    // It's impossible for both children to be red because the parent and the older child both being
+    // red would be a violation that a previous balance would have fixed.
+    typename node_ptr::pointer node = nullptr;
+    if (parent->left && parent->left->is_red) {
+        node = parent->left.get(); // The left node is red.
+    } else if (parent->right && parent->right->is_red) {
+        node = parent->right.get(); // The right node is red.
+    } else {
+        return std::move(grandparent); // parent is red but its children are black; already correct.
+    }
+
+    node_t* uncle = nullptr;
+    node_ptr (rb_tree::*rotate_func)(node_ptr &&) = nullptr;
+
+    // Determine the uncle and rotation function from the direction of the parent and node.
+    if (parent == grandparent->left.get()) {
+        // parent is the left child of grandparent.
+        uncle = grandparent->right.get();
+
+        if (node == parent->right.get()) {
+            rotate_func = &rb_tree::rotate_left_right; // node is the right child of parent.
+        } else {
+            rotate_func = &rb_tree::rotate_right; // node is the left child of parent.
+        }
+    } else {
+        // parent is the right child of grandparent.
+        uncle = grandparent->left.get();
+
+        if (node == parent->left.get()) {
+            rotate_func = &rb_tree::rotate_right_left; // node is the left child of parent.
+        } else {
+            rotate_func = &rb_tree::rotate_left; // node is the right child of parent.
+        }
+    }
+
+    // At this point, parent is red and node is red.
+    if (uncle && uncle->is_red) {
+        // parent is red and uncle is red; make them black.
+        parent->is_red = false;
+        uncle->is_red = false;
+    } else {
+        // uncle is black or null; rotation needed.
+        grandparent->is_red = true;
+        grandparent = (this->*rotate_func)(std::move(grandparent));
+    }
+
+    if (grandparent == root_) {
+        grandparent->is_red = false; // Root node must never be red.
+    } else {
+        // Effectively set to red when uncle is red and set to black when a rotation is done.
+        // For the latter case, keep in mind this is the new root rather than the original
+        // i.e. `node` for double rotations or `parent` for single rotations.
+        grandparent->is_red = !grandparent->is_red;
+    }
+
+    return std::move(grandparent);
+}
+
+template<typename T>
 void rb_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
 {
     if (parent->value > node->value) {
@@ -47,98 +116,20 @@ void rb_tree<T>::insert_node(node_ptr& parent, node_ptr&& node)
         if (parent->left) {
             // The left node_t exists; start the search at the left node.
             insert_node(parent->left, std::move(node));
-
-            auto& grandparent = parent;
-            const auto parent_ = grandparent->left.get();
-            const auto uncle = grandparent->right.get();
-
-            if (parent_ && parent_->is_red) { // P is red
-                typename node_ptr::pointer node_ = nullptr;
-                if (parent_->left && parent_->left->is_red) {
-                    node_ = parent_->left.get(); // The left node is red.
-                } else if (parent_->right && parent_->right->is_red) {
-                    node_ = parent_->right.get(); // The right node is red.
-                }
-
-                if (node_ != nullptr) { // At least one of P's children is also red.
-                    if (uncle && uncle->is_red) {
-                        // P is red and U is red; make them black and make G red.
-                        parent_->is_red = false;
-                        uncle->is_red = false;
-                        if (grandparent != root_) {
-                            grandparent->is_red = true;
-                        }
-                    } else { // P is red but U is black or null; rotation needed.
-                        if (node_ == parent_->right.get()) {
-                            // N is the right child of P and P is the left child of G.
-                            grandparent->is_red = true;
-                            node_->is_red = false;
-                            grandparent = rotate_left_right(std::move(grandparent));
-                        } else {
-                            // N is the left child of P and P is the left child of G.
-                            parent_->is_red = false;
-                            grandparent->is_red = true;
-                            grandparent = rotate_right(std::move(grandparent));
-                        }
-                    }
-                } else {
-                    // P is red but its children are black, so it's all correct.
-                }
-            } else {
-                // P is black, so it doesn't matter what colour its children are.
-            }
+            parent = balance(parent->left.get(), std::move(parent));
         } else {
             // The left node_t doesn't exist; found the free position.
-            parent->left = std::move(node); // Inserts the node_t.
+            parent->left = std::move(node); // Insert the node_t.
         }
     } else if (parent->value < node->value) {
         // Larger go right.
         if (parent->right) {
             // The right node_t exists; start the search at the right node.
             insert_node(parent->right, std::move(node));
-
-            auto& grandparent = parent;
-            const auto parent_ = grandparent->right.get();
-            const auto uncle = grandparent->left.get();
-
-            if (parent_ && parent_->is_red) { // P is red
-                typename node_ptr::pointer node_ = nullptr;
-                if (parent_->left && parent_->left->is_red) {
-                    node_ = parent_->left.get(); // The left node is red.
-                } else if (parent_->right && parent_->right->is_red) {
-                    node_ = parent_->right.get(); // The right node is red.
-                }
-
-                if (node_ != nullptr) { // At least one of P's children is also red.
-                    if (uncle && uncle->is_red) {
-                        // P is red and U is red; make them black and make G red.
-                        parent_->is_red = false;
-                        uncle->is_red = false;
-                        if (grandparent != root_) {
-                            grandparent->is_red = true;
-                        }
-                    } else { // P is red but U is black or null; rotation needed.
-                        if (node_ == parent_->left.get()) {
-                            // N is the left child of P and P is the right child of G.
-                            grandparent->is_red = true;
-                            node_->is_red = false;
-                            grandparent = rotate_right_left(std::move(grandparent));
-                        } else {
-                            // N is the right child of P and P is the right child of G.
-                            parent_->is_red = false;
-                            grandparent->is_red = true;
-                            grandparent = rotate_left(std::move(grandparent));
-                        }
-                    }
-                } else {
-                    // P is red but its children are black, so it's all correct.
-                }
-            } else {
-                // P is black, so it doesn't matter what colour its children are.
-            }
+            parent = balance(parent->right.get(), std::move(parent));
         } else {
             // The right node_t doesn't exist; found the free position.
-            parent->right = std::move(node); // Inserts the node.
+            parent->right = std::move(node); // Insert the node.
         }
     } else {
         // Value is equal to the parent's value; no duplicates allowed.
