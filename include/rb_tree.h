@@ -51,7 +51,8 @@ private:
     /**
      * @brief A binary tree node.
      *
-     * Contains the value, a pointer to the lef child, and a pointer to the right child.
+     * Contains the value, a pointer to the left child, a pointer to the right child, and a boolean
+     * for whether the node is red or black. The node is red by default.
      */
     struct node_t
     {
@@ -83,6 +84,11 @@ private:
          * @brief The node's right child.
          */
         node_ptr right;
+
+        /**
+         * @brief @c true if the node is red; @c false if the node is black.
+         */
+        bool is_red = true;
     };
 
     /**
