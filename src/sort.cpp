@@ -1,15 +1,15 @@
 #include "sort.h"
 
-void insertion_sort(std::vector<int>& array)
+void insertion_sort(std::vector<int>& array, std::size_t start, std::size_t end)
 {
     // Start at 1 because the 0th element is already considered sorted.
-    for (std::size_t unsorted_i = 1; unsorted_i < array.size(); ++unsorted_i) {
+    for (std::size_t unsorted_i = start + 1; unsorted_i <= end; ++unsorted_i) {
         int item = array[unsorted_i];
         std::size_t sorted_i = unsorted_i; // One past the end of the sorted sub-list.
 
         // Start at the end of the sorted sublist and go backwards until the sorted position for
         // `item` is found or the start of the sub-list is reached.
-        for (; sorted_i > 0 && array[sorted_i - 1] > item; --sorted_i) {
+        for (; sorted_i > start && array[sorted_i - 1] > item; --sorted_i) {
             // Move back by one position to make space for `item` in the sorted sub-list.
             array[sorted_i] = array[sorted_i - 1];
         }
@@ -50,21 +50,26 @@ std::size_t partition(std::vector<int>& array, std::size_t start, std::size_t en
     return high;
 }
 
-void quick_sort(std::vector<int>& array, std::size_t start, std::size_t end)
+void quick_sort(
+    std::vector<int>& array, std::size_t start, std::size_t end, bool use_insertion_sort)
 {
     if (end > start) {
-        std::size_t pivot = partition(array, start, end);
+        if (use_insertion_sort && end - start < 19) {
+            insertion_sort(array, start, end);
+        } else {
+            std::size_t pivot = partition(array, start, end);
 
-        // Avoid overflow since pivot is unsigned.
-        if (pivot > 0) {
-            quick_sort(array, start, pivot - 1);
+            // Avoid overflow since pivot is unsigned.
+            if (pivot > 0) {
+                quick_sort(array, start, pivot - 1, use_insertion_sort);
+            }
+
+            quick_sort(array, pivot + 1, end, use_insertion_sort);
         }
-
-        quick_sort(array, pivot + 1, end);
     }
 }
 
-void quick_sort(std::vector<int>& array)
+void quick_sort(std::vector<int>& array, bool use_insertion_sort)
 {
-    quick_sort(array, 0, array.size() - 1);
+    quick_sort(array, 0, array.size() - 1, use_insertion_sort);
 }

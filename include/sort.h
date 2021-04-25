@@ -4,12 +4,13 @@
 #include <cstddef>
 #include <vector>
 
-void insertion_sort(std::vector<int>& array);
+void insertion_sort(std::vector<int>& array, std::size_t start, std::size_t end);
 
 std::size_t partition(std::vector<int>& array, std::size_t start, std::size_t end);
 
-void quick_sort(std::vector<int>& array, std::size_t start, std::size_t end);
+void quick_sort(
+    std::vector<int>& array, std::size_t start, std::size_t end, bool use_insertion_sort = false);
 
-void quick_sort(std::vector<int>& array);
+void quick_sort(std::vector<int>& array, bool use_insertion_sort = false);
 
 #endif
