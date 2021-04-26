@@ -1,6 +1,7 @@
 #include "sort.h"
 
 #include <algorithm>
+#include <cassert>
 #include <ctime>
 #include <iostream>
 #include <random>
@@ -44,20 +45,22 @@ int main()
 
         double time = benchmark_quick_sort(array, PivotSelection::middle, false);
         std::cout << "Quick sort time, with pivot middle element = " << time << " ms\n";
+        assert(std::is_sorted(array.cbegin(), array.cend()));
 
         array = array_copy;
         time = benchmark_quick_sort(array, PivotSelection::middle, true);
         std::cout << "Quick sort time, with pivot median element = " << time << " ms\n";
+        assert(std::is_sorted(array.cbegin(), array.cend()));
 
         array = array_copy;
         time = benchmark_quick_sort(array, PivotSelection::median, false);
-        std::cout << "Quick sort time and insertion sort time, with pivot middle element = " << time
-                  << " ms\n";
+        std::cout << "Quick + insertion sort time, with pivot middle element = " << time << " ms\n";
+        assert(std::is_sorted(array.cbegin(), array.cend()));
 
         array = array_copy;
         time = benchmark_quick_sort(array, PivotSelection::median, true);
-        std::cout << "Quick sort time and insertion sort time, with pivot median element = " << time
-                  << " ms\n";
+        std::cout << "Quick + insertion sort time, with pivot median element = " << time << " ms\n";
+        assert(std::is_sorted(array.cbegin(), array.cend()));
     } while (prompt_retry());
 
     return 0;
