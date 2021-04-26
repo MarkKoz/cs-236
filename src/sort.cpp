@@ -26,7 +26,7 @@ std::size_t partition(std::vector<int>& array, std::size_t start, std::size_t en
     std::size_t high = end;
 
     // Keep swapping values on either side until the indices for the two sides meet.
-    while (high > low) {
+    while (true) {
         // Move from left to right until low is greater than the pivot.
         while (low <= high && array[low] <= pivot) {
             ++low;
@@ -43,6 +43,8 @@ std::size_t partition(std::vector<int>& array, std::size_t start, std::size_t en
         // value will be moved before the pivot.
         if (high > low) {
             std::swap(array[low], array[high]);
+        } else {
+            break;
         }
     }
 
