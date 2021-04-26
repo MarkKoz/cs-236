@@ -28,8 +28,8 @@ double benchmark_quick_sort(Args&&... args);
 
 int main()
 {
-    // Use a constant seed to get consistent data for benchmarks.
-    std::minstd_rand random_engine(1);
+    std::random_device random_device;
+    std::minstd_rand random_engine(random_device());
     std::size_t size = 0;
 
     do {
