@@ -88,6 +88,7 @@ bool prompt_retry()
         std::cin >> std::ws >> selection;
 
         if (selection == "y" || selection == "Y") {
+            std::cout << '\n';
             return true;
         } else if (selection == "n" || selection == "N") {
             return false;
