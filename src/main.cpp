@@ -29,10 +29,12 @@ double benchmark_quick_sort(Args&&... args);
 int main()
 {
     std::random_device random_device;
-    std::minstd_rand random_engine(random_device());
+    std::minstd_rand random_engine;
     std::size_t size = 0;
 
     do {
+        random_engine.seed(random_device());
+
         std::cout << "Enter array size: ";
         std::cin >> std::ws >> size;
 
