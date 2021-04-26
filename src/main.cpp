@@ -24,7 +24,7 @@ bool prompt_retry();
  * @return The approximate processor time, in nanoseconds, taken to execute the sort.
  */
 template<class... Args>
-double benchmark_quick_sort(Args&&... args);
+std::clock_t benchmark_quick_sort(Args&&... args);
 
 int main()
 {
@@ -45,7 +45,7 @@ int main()
         // Save a copy so the value can be restored.
         std::vector<int> array_copy = array;
 
-        double time = benchmark_quick_sort(array, PivotSelection::middle, false);
+        std::clock_t time = benchmark_quick_sort(array, PivotSelection::middle, false);
         std::cout << "Quick sort time, with pivot middle element = " << time << " ms\n";
         assert(std::is_sorted(array.cbegin(), array.cend()));
 
@@ -69,14 +69,14 @@ int main()
 }
 
 template<class... Args>
-double benchmark_quick_sort(Args&&... args)
+std::clock_t benchmark_quick_sort(Args&&... args)
 {
     std::clock_t start = std::clock();
     quick_sort(std::forward<Args>(args)...);
 
     // Convert to milliseconds.
     // It may already be in milliseconds, but this is not a guarantee (implementation-defined).
-    return 1000.0 * (std::clock() - start) / CLOCKS_PER_SEC;
+    return 1000 * (std::clock() - start) / CLOCKS_PER_SEC;
 }
 
 bool prompt_retry()
