@@ -1,5 +1,8 @@
 #include "sort.h"
 
+#include <cassert>
+#include <stdexcept>
+
 void insertion_sort(std::vector<int>& array, std::size_t start, std::size_t end)
 {
     // Start at 1 because the 0th element is already considered sorted.
@@ -53,25 +56,54 @@ std::size_t partition(std::vector<int>& array, std::size_t start, std::size_t en
 }
 
 void quick_sort(
-    std::vector<int>& array, std::size_t start, std::size_t end, bool use_insertion_sort)
+    std::vector<int>& array,
+    std::size_t start,
+    std::size_t end,
+    PivotSelection pivot_selection,
+    bool use_insertion_sort)
 {
     if (end > start) {
         if (use_insertion_sort && end - start < 19) {
             insertion_sort(array, start, end);
         } else {
+            select_pivot(array, start, end, pivot_selection);
             std::size_t pivot = partition(array, start, end);
 
             // Avoid overflow since pivot is unsigned.
             if (pivot > 0) {
-                quick_sort(array, start, pivot - 1, use_insertion_sort);
+                quick_sort(array, start, pivot - 1, pivot_selection, use_insertion_sort);
             }
 
-            quick_sort(array, pivot + 1, end, use_insertion_sort);
+            quick_sort(array, pivot + 1, end, pivot_selection, use_insertion_sort);
         }
     }
 }
 
-void quick_sort(std::vector<int>& array, bool use_insertion_sort)
+void quick_sort(std::vector<int>& array, PivotSelection pivot_selection, bool use_insertion_sort)
 {
-    quick_sort(array, 0, array.size() - 1, use_insertion_sort);
+    quick_sort(array, 0, array.size() - 1, pivot_selection, use_insertion_sort);
+}
+
+void select_pivot(
+    std::vector<int>& array, std::size_t start, std::size_t end, PivotSelection pivot_selection)
+{
+    std::size_t pivot_index = start + ((end - start) / 2); // Calculate the middle.
+    assert(pivot_index >= start);
+    assert(pivot_index <= end);
+
+    if (pivot_selection == PivotSelection::median) {
+        // Quickly find the index for the median of the start, end, and middle.
+        int delta = array[start] - array[end]; // Positive if start is greater.
+
+        if (delta * (array[end] - array[pivot_index]) > 0) {
+            pivot_index = end;
+        } else if (delta * (array[start] - array[pivot_index]) < 0) {
+            pivot_index = start;
+        }
+    } else if (pivot_selection != PivotSelection::middle) {
+        throw std::invalid_argument("Unsupported PivotSelection.");
+    }
+
+    // Swap the pivot to the start.
+    std::swap(array[start], array[pivot_index]);
 }

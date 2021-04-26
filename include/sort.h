@@ -4,13 +4,29 @@
 #include <cstddef>
 #include <vector>
 
+enum PivotSelection
+{
+    middle,
+    median
+};
+
 void insertion_sort(std::vector<int>& array, std::size_t start, std::size_t end);
 
 std::size_t partition(std::vector<int>& array, std::size_t start, std::size_t end);
 
 void quick_sort(
-    std::vector<int>& array, std::size_t start, std::size_t end, bool use_insertion_sort = false);
+    std::vector<int>& array,
+    std::size_t start,
+    std::size_t end,
+    PivotSelection pivot_selection,
+    bool use_insertion_sort);
 
-void quick_sort(std::vector<int>& array, bool use_insertion_sort = false);
+void quick_sort(
+    std::vector<int>& array,
+    PivotSelection pivot_selection = PivotSelection::middle,
+    bool use_insertion_sort = false);
+
+void select_pivot(
+    std::vector<int>& array, std::size_t start, std::size_t end, PivotSelection pivot_selection);
 
 #endif
