@@ -1,7 +1,12 @@
 #include "io.h"
 
+#include "graph.h"
+
+#include <filesystem>
 #include <iostream>
 #include <limits>
+#include <string>
+#include <vector>
 
 std::filesystem::path get_file_path()
 {
@@ -58,4 +63,38 @@ bool prompt_retry()
             std::cerr << "Unknown value, try again: ";
         }
     }
+}
+
+std::vector<vertex> read_file()
+{
+    std::ifstream file(get_file_path());
+    std::vector<vertex> vertices;
+
+    while (file) {
+        vertices.push_back(read_vertex(file));
+    }
+
+    return vertices;
+}
+
+vertex read_vertex(std::ifstream& file)
+{
+    vertex v;
+    std::getline(file, v.name);
+
+    // Read the out degree.
+    std::size_t num = 0;
+    file >> std::ws >> num;
+    v.neighbours.reserve(num);
+
+    // Read the neighbours.
+    std::string neighbours_line;
+    std::getline(file, neighbours_line);
+    std::istringstream neighbours_ss(neighbours_line);
+
+    while (neighbours_ss >> num) {
+        v.neighbours.push_back(num);
+    }
+
+    return v;
 }

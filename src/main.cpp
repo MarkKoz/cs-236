@@ -1,13 +1,12 @@
+#include "graph.h"
 #include "io.h"
 
-#include <fstream>
+#include <vector>
 
 int main()
 {
     do {
-        const auto path = get_file_path();
-        std::ifstream file(path);
-
+        std::vector<vertex> vertices = read_file();
     } while (prompt_retry());
 
     return 0;
