@@ -70,7 +70,10 @@ std::vector<vertex> read_file()
     std::ifstream file(get_file_path());
     std::vector<vertex> vertices;
 
-    while (file) {
+    // Make sure stream is good before peeking.
+    // Peek to check if the next read would result in EOF.
+    // Check if it's still good after peeking, since peek can set error flags, including EOF.
+    while (file.good() && file.peek() && file.good()) {
         vertices.push_back(read_vertex(file));
     }
 
