@@ -8,7 +8,7 @@ add_executable(${PROJECT_NAME}
     include/graph.h
     include/io.h
     src/io.cpp
-    src/main.cpp)
+    src/main.cpp src/graph.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
     include)
 
