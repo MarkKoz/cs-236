@@ -28,6 +28,7 @@ To calculate the CPU time, use the header `<ctime>` and the `clock_t` type. It d
 
 <details>
 <summary>Sample Output 1</summary>
+
 ```
 Enter array size: 100000
 Quick sort time, with pivot middle element = 28
@@ -40,6 +41,7 @@ Would you like to enter another Array size (Y / N)? Y
 
 <details>
 <summary>Sample Output 2</summary>
+
 ```
 Enter array size: 300000
 Quick sort time, with pivot middle element = 111
