@@ -1,5 +1,6 @@
 #include "graph.h"
 
+#include <iostream>
 #include <ostream>
 #include <set>
 
@@ -57,4 +58,19 @@ void find_shortest_path(
     };
 
     dfs(dfs, start);
+}
+
+void print_shortest_path(
+    std::vector<vertex>& vertices, const std::size_t start, const std::size_t end)
+{
+    find_shortest_path(vertices, start, end);
+
+    std::size_t index = end;
+    do {
+        vertex v = vertices[index];
+        std::cout << index + 1 << ' ' << v.name << "\n↑\n";
+        index = v.previous;
+    } while (index != start);
+
+    std::cout << start + 1 << ' ' << vertices[start].name << '\n';
 }

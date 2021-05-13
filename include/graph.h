@@ -16,4 +16,6 @@ struct vertex
 
 void find_shortest_path(std::vector<vertex>& vertices, std::size_t start, std::size_t end);
 
+void print_shortest_path(std::vector<vertex>& vertices, std::size_t start, std::size_t end);
+
 #endif

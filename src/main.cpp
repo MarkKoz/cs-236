@@ -20,6 +20,12 @@ int main()
 
         std::cout << "Enter the number of the destination city: ";
         const std::size_t end = prompt_city(vertices.size()) - 1;
+
+        std::cout << "\nShortest path from " << vertices[start].name
+                  << " to " << vertices[end].name << " is:\n";
+
+        print_shortest_path(vertices, start, end);
+        std::cout << '\n';
     } while (prompt_retry());
 
     return 0;
