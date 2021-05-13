@@ -17,14 +17,12 @@ std::ostream& operator<<(std::ostream& stream, const vertex& vertex)
 void find_shortest_path(
     std::vector<vertex>& vertices, const std::size_t start, const std::size_t end)
 {
-    std::size_t length = 0;
+    std::size_t length = 1;
     std::size_t shortest = vertices.size() + 1; // Initial value is intentionally impossible.
     std::set<std::size_t> visited;
 
     // The lambda needs a reference to itself in order to recurse.
     const auto dfs = [&](const auto& self, const std::size_t index) -> void {
-        ++length;
-
         if (length > shortest) {
             // Discard the current path because it's longer than the shortest known path.
             return;
@@ -41,7 +39,9 @@ void find_shortest_path(
         // Visit all unvisited neighbours.
         for (const auto neighbour : vertices[index].neighbours) {
             if (visited.count(neighbour) == 0) {
+                ++length;
                 self(self, neighbour);
+                --length;
 
                 // Store the parent vertex to enable traversing the shortest path later.
                 vertices[neighbour].previous = index;
@@ -53,11 +53,10 @@ void find_shortest_path(
                 visited.erase(neighbour);
             }
         }
-
-        --length;
     };
 
     dfs(dfs, start);
+    std::cout << shortest << '\n';
 }
 
 void print_shortest_path(
