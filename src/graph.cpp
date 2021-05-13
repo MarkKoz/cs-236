@@ -41,7 +41,15 @@ void find_shortest_path(
         for (const auto neighbour : vertices[index].neighbours) {
             if (visited.count(neighbour) == 0) {
                 self(self, neighbour);
+
+                // Store the parent vertex to enable traversing the shortest path later.
                 vertices[neighbour].previous = index;
+
+                // Vertices only need to be marked as visited to avoid cycles.
+                // They must be unmarked once a path is traversed (or aborted).
+                // The vertex could lead to a shorter path that will get traversed later.
+                // If it's still marked as visited, it'll never go down that shorter path later.
+                visited.erase(neighbour);
             }
         }
 
