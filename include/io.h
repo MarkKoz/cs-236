@@ -9,6 +9,8 @@
 
 std::filesystem::path get_file_path();
 
+std::size_t prompt_city(std::size_t max);
+
 bool prompt_retry();
 
 std::vector<vertex> read_file();

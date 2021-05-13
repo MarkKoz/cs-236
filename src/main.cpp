@@ -15,7 +15,11 @@ int main()
     }
 
     do {
+        std::cout << "\nEnter the number of the starting city: ";
+        const std::size_t start = prompt_city(vertices.size()) - 1;
 
+        std::cout << "Enter the number of the destination city: ";
+        const std::size_t end = prompt_city(vertices.size()) - 1;
     } while (prompt_retry());
 
     return 0;

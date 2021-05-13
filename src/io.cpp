@@ -43,6 +43,28 @@ std::filesystem::path get_file_path()
     }
 }
 
+std::size_t prompt_city(std::size_t max) {
+    std::size_t selection = 0;
+
+    while (true) {
+        std::cin >> std::ws >> selection;
+        bool failed = std::cin.fail();
+
+        // Not sure why, but it must be cleared before ignoring, otherwise all subsequent reads
+        // will instantly fail and this will loop will never end.
+        std::cin.clear();
+
+        // Consume the rest of the line.
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        if (!failed && selection >= 1 && selection <= max) {
+            return selection;
+        } else {
+            std::cerr << "Invalid city, try again: ";
+        }
+    }
+}
+
 bool prompt_retry()
 {
     std::string selection;
@@ -55,7 +77,6 @@ bool prompt_retry()
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         if (selection == "y" || selection == "Y") {
-            std::cout << '\n';
             return true;
         } else if (selection == "n" || selection == "N") {
             return false;
