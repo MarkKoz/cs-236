@@ -9,5 +9,6 @@ run="""
         -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
         .. \
     && cmake --build . \
-    && ./output
+    && cd .. \
+    && ./IGNORE_THIS/output
 """

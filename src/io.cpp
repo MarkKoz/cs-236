@@ -2,16 +2,15 @@
 
 #include "graph.h"
 
-#include <filesystem>
 #include <iostream>
 #include <limits>
 #include <string>
 #include <vector>
 
-std::filesystem::path get_file_path()
+filesystem::path get_file_path()
 {
     std::string path_string;
-    std::filesystem::path path;
+    filesystem::path path;
 
     std::cout << "Enter a relative or absolute path to a network file "
                  "(default: '" << DEFAULT_PATH << "'): ";
@@ -25,13 +24,13 @@ std::filesystem::path get_file_path()
         }
 
         try {
-            if (std::filesystem::exists(path)) {
+            if (filesystem::exists(path)) {
                 // Make it absolute and resolve symlinks.
-                path = std::filesystem::canonical(path);
+                path = filesystem::canonical(path);
 
                 // Canonical path doesn't necessarily exist.
-                if (std::filesystem::exists(path)) {
-                    if (std::filesystem::is_regular_file(path)) {
+                if (filesystem::exists(path)) {
+                    if (filesystem::is_regular_file(path)) {
                         return path;
                     } else {
                         std::cerr << "Path does not point to a file, try again: ";
@@ -42,7 +41,7 @@ std::filesystem::path get_file_path()
             } else {
                 std::cerr << "Path does not exist, try again: ";
             }
-        } catch (std::filesystem::filesystem_error& e) {
+        } catch (filesystem::filesystem_error& e) {
             std::cerr << e.what() << '\n';
             std::cerr << "Try again: ";
         }

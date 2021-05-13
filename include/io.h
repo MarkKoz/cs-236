@@ -3,7 +3,14 @@
 
 #include "graph.h"
 
-#include <filesystem>
+#ifdef EXPERIMENTAL_FS
+    #include <experimental/filesystem>
+    namespace filesystem = std::experimental::filesystem;
+#else
+    #include <filesystem>
+    namespace filesystem = std::filesystem;
+#endif
+
 #include <fstream>
 #include <vector>
 
@@ -17,7 +24,7 @@
  *
  * @return The path to the network file.
  */
-std::filesystem::path get_file_path();
+filesystem::path get_file_path();
 
 /**
  * @brief Prompt for one-based city index.

@@ -7,10 +7,25 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_executable(${PROJECT_NAME}
     include/graph.h
     include/io.h
+    src/graph.cpp
     src/io.cpp
-    src/main.cpp src/graph.cpp)
+    src/main.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
     include)
+
+# Must link to libstdc++fs for filesystem until GCC 9.0.
+if (CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 9.0)
+    target_link_libraries(${PROJECT_NAME} stdc++fs)
+
+    # filesystem is under experimental/filesystem until GCC 8.0.
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
+        if (CMAKE_VERSION VERSION_LESS 3.12)
+            add_definitions(-DEXPERIMENTAL_FS)
+        else ()
+            add_compile_definitions(EXPERIMENTAL_FS)
+        endif ()
+    endif ()
+endif ()
 
 list(APPEND FLAGS_WARN
     -Wall
