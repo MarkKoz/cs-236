@@ -14,12 +14,12 @@ std::filesystem::path get_file_path()
     std::filesystem::path path;
 
     std::cout << "Enter a relative or absolute path to a network file "
-                 "(default: 'res/network_file.txt'): ";
+                 "(default: '" << DEFAULT_PATH << "'): ";
 
     while (true) {
         std::getline(std::cin, path_string);
         if (path_string.empty()) {
-            path = "res/network_file.txt";
+            path = DEFAULT_PATH;
         } else {
             path = path_string;
         }
