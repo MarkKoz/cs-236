@@ -13,10 +13,16 @@ std::filesystem::path get_file_path()
     std::string path_string;
     std::filesystem::path path;
 
-    std::cout << "Enter a relative or absolute path to a network file: ";
+    std::cout << "Enter a relative or absolute path to a network file "
+                 "(default: 'res/network_file.txt'): ";
+
     while (true) {
         std::getline(std::cin, path_string);
-        path = path_string;
+        if (path_string.empty()) {
+            path = "res/network_file.txt";
+        } else {
+            path = path_string;
+        }
 
         try {
             if (std::filesystem::exists(path)) {
@@ -43,7 +49,8 @@ std::filesystem::path get_file_path()
     }
 }
 
-std::size_t prompt_city(std::size_t max) {
+std::size_t prompt_city(std::size_t max)
+{
     std::size_t selection = 0;
 
     while (true) {
