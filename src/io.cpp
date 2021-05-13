@@ -124,7 +124,7 @@ vertex read_vertex(std::ifstream& file)
     std::istringstream neighbours_ss(neighbours_line);
 
     while (neighbours_ss >> num) {
-        v.neighbours.push_back(num);
+        v.neighbours.push_back(num - 1);
     }
 
     return v;
