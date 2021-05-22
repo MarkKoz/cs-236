@@ -5,7 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 add_executable(${PROJECT_NAME}
-    src/main.cpp)
+    include/graph.h
+    src/main.cpp
+    src/graph.cpp)
 target_include_directories(${PROJECT_NAME} PUBLIC
     include)
 
