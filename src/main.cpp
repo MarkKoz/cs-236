@@ -18,10 +18,16 @@ int main()
         {'G', 'E', 7},
         {'G', 'F', 7},
     }};
-    std::vector<edge> mst = kruskals_mst(edges);
+    std::vector<edge> mst_edges = kruskals_mst(edges);
+    std::size_t total_weight = 0;
 
     std::cout << "Finding MST using Kruskal's Algorithm\nEdges of MST are\n";
-    std::cout << "Weight of MST is " << '\n';
+    for (const edge& edge : mst_edges) {
+        std::cout << edge.endpoint_1 << " ↔ " << edge.endpoint_2 << " = " << edge.weight << '\n';
+        total_weight += edge.weight;
+    }
+
+    std::cout << "Weight of MST is " << total_weight << '\n';
 
     return 0;
 }
